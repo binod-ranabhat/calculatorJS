@@ -53,9 +53,9 @@ function calcFunction(a, b, operator) {
             if (b === 0) throw "Cannot Divide By 0";
             return a / b;
         case '%':
-            return a % b;
-		case '&': // for fun
-			 return parseFloat(`${a}${b}`);
+        	return a % b;
+	case '&': // for fun
+		return parseFloat(`${a}${b}`);
         default:
             throw "I dont know what to DO  :P";
     }
@@ -131,8 +131,8 @@ function calcOrder(operator) {
         case '/':
         case '%':
             return 2;
-		case '&':
-			return 3;
+	case '&':
+		return 3;
         default:
             return 0;
     }
