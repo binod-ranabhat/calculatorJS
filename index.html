@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Calculator</title>
+	<link rel="stylesheet" href="style.css">
+	<!-- Google Fonts for modern look -->
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+	<!-- Material Icons for icons -->
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+   
+	<div class="calc-container">
+		
+		<div class="calc-header">
+			<span class="material-icons">signal_cellular_alt</span>
+			<span class="material-icons">wifi</span>
+			<span class="material-icons">battery_full</span>
+		</div>
+		
+		<div class="calc-display">
+			<div class="calc-expression" id="calc-expression"></div>
+			<div class="calc-result" id="calc-result"></div>
+		</div>
+		<div class="calc-buttons">
+			<button class="btn btn-ac" data-value="AC">AC</button>
+			<button class="btn btn-paren" data-value="(">(</button>
+			<button class="btn btn-paren" data-value=")">)</button>
+			<button class="btn btn-operator" data-value="&">&</button>
+            
+
+			<button class="btn" data-value="7">7</button>
+			<button class="btn" data-value="8">8</button>
+			<button class="btn" data-value="9">9</button>
+            <button class="btn btn-operator" data-value="/">÷</button>
+
+			<button class="btn" data-value="4">4</button>
+			<button class="btn" data-value="5">5</button>
+			<button class="btn" data-value="6">6</button>
+            <button class="btn btn-operator" data-value="*">×</button>
+			
+			<button class="btn" data-value="1">1</button>
+			<button class="btn" data-value="2">2</button>
+			<button class="btn" data-value="3">3</button>
+			<button class="btn btn-operator" data-value="-">-</button>
+
+
+			<button class="btn btn-back" data-value="back"><span class="material-icons">backspace</span></button>
+			<button class="btn" data-value="0">0</button>
+			<button class="btn" data-value=",">,</button>
+            <button class="btn btn-operator" data-value="+">+</button>
+
+			<button class="btn btn-equal" data-value="=">=</button>
+		</div>
+	</div>
+</div>
+
+<script>
+const resultEl = document.getElementById('calc-result');
+const exprEl = document.getElementById('calc-expression');
+let inputStr = '';
+document.querySelector('.calc-buttons').addEventListener('click', function(e) {
+	const btn = e.target.closest('button');
+	if (!btn) return;
+	const value = btn.getAttribute('data-value');
+	if (!value) return;
+	if (value === 'AC') {
+		inputStr = '';
+		exprEl.textContent = '';
+		resultEl.textContent = '';
+		return;
+	}
+	if (value === 'back') {
+		inputStr = inputStr.slice(0, -1);
+		resultEl.textContent = inputStr;
+		return;
+	}
+	if (value === '=') {
+		if (inputStr.trim() === '') return;
+		exprEl.textContent = inputStr;
+		try {
+			// Replace , with . for decimal if needed
+			let result = calculate(inputStr.replace(/,/g, '.'));
+			resultEl.textContent = result;
+			inputStr = '' + result;
+		} catch {
+			resultEl.textContent = 'Error';
+		}
+		return;
+	}
+	inputStr += value;
+	resultEl.textContent = inputStr;
+});
+</script>
+<script src="calc.js"></script>
+
+</body>
+</html>
