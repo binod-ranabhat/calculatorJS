@@ -58,14 +58,21 @@
 </div>
 
 <script>
+
 const resultEl = document.getElementById('calc-result');
 const exprEl = document.getElementById('calc-expression');
 let inputStr = '';
-document.querySelector('.calc-buttons').addEventListener('click', function(e) {
-	const btn = e.target.closest('button');
-	if (!btn) return;
-	const value = btn.getAttribute('data-value');
-	if (!value) return;
+
+function handleButtonClick(e, overrideValue) {
+	let value;
+	if (overrideValue !== undefined) {
+		value = overrideValue;
+	} else {
+		const btn = e.target.closest('button');
+		if (!btn) return;
+		value = btn.getAttribute('data-value');
+		if (!value) return;
+	}
 	if (value === 'AC') {
 		inputStr = '';
 		exprEl.textContent = '';
@@ -92,6 +99,26 @@ document.querySelector('.calc-buttons').addEventListener('click', function(e) {
 	}
 	inputStr += value;
 	resultEl.textContent = inputStr;
+}
+
+document.querySelector('.calc-buttons').addEventListener('click', function(e) {
+	handleButtonClick(e);
+});
+
+// Keyboard support
+document.addEventListener('keydown', function(e) {
+	let value = e.key;
+	if (value === 'Enter') value = '=';
+	if (value === 'Backspace') value = 'back';
+	if (value === 'Delete' || value === 'Escape') value = 'AC';
+	// Accept numbers, operators, parentheses, comma, etc.
+	if (
+		/[0-9]/.test(value) ||
+		['+', '-', '*', '/', '%', '&', '(', ')', ',', '=', 'AC', 'back'].includes(value)
+	) {
+		handleButtonClick(null, value);
+		e.preventDefault();
+	}
 });
 </script>
 <script src="calc.js"></script>
